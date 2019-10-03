@@ -10,15 +10,13 @@ def cell(n):
     for i in range(n):
         cell.append([])
         for j in range(n):
-            if (i%3==2 or j%3==1):
-                cell[i].append("*")
+            if (i,j)==(0,2) or(i,j)==(1,0) or(i,j)==(1,2) or(i,j)==(2,1) or (i,j)==(2,2) :
+                cell[i].append("* ")
             else:
                 cell[i].append(" ")
-    print(cell)
-    time.sleep(0.5)
     return cell
 
-def cell_out(cell):
+def cell_out(cell): 
     n = len(cell)
     cell_out = []
     for k in range(n):
@@ -35,30 +33,35 @@ def alive(cell,x,y):
         for j in range(-1,2):
             x1 = x+i
             y1 = y+j
-            if x1<0 or y1<0 or x1>n-1 or y1>n-1 or (i == j and i==0):
-                continue
-            elif cell[x1][y1]=="*":
-                count += 1
-#    print(count)
-    if cell[x][y]=="*":
+            if x1<0 or y1<0 or x1>n-1 or y1>n-1 or (i==j and i==0):
+                abc=1
+            else:
+                if(cell[x1][y1]=="* ") :
+                    count +=1
+    if cell[x][y]=="* ":
         if count<2:
             return False
         elif count==2 or count<=3:
             return True
         elif count>3:
             return False
-    elif count==3:
-        return True
+    else:
+        if count == 3:
+            return True
+        else:
+            return False
 
-def evolve(cell):
-    n = len(cell)
+def evolve(inc): 
+    n = len(inc)
+    out = cell(n)
+    inc = tuple(inc)
     for i in range(n):
         for j in range(n):
-            if(alive(cell,i,j)):
-                cell[i][j] ="*"
+            if alive(inc,i,j):
+                out[i][j] = "* "
             else:
-                cell[i][j] =" "
-    return cell
+                out[i][j]= "  "
+    return out
     
 
 n = int(input("size"))
@@ -67,8 +70,9 @@ cell_o = cell_out(cell1)
 
 while(True):
     os.system('clear')
-    celln = evolve(cell1) 
-    cell_o = cell_out(celln)
     for i in range(n):
         print(cell_o[i])
+    cell2 = evolve(cell1) 
+    cell_o = cell_out(cell2)
+    cell1 = cell2
     time.sleep(0.1)
